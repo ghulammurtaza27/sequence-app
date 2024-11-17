@@ -9,15 +9,19 @@ export const uploadFile = async (file) => {
       method: 'POST',
       body: formData,
       mode: 'cors',
-      credentials: 'omit', // Change this to 'omit'
+      credentials: 'omit',
+      headers: {
+        'Accept': '*/*',
+      },
     });
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('Server response:', errorText);
       throw new Error(errorText || `HTTP error! status: ${response.status}`);
     }
 
-    return await response.blob();
+    return await response.json();
   } catch (error) {
     console.error('Error uploading file:', error);
     throw error;

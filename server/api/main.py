@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, JSONResponse
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from OCC.Core.STEPControl import STEPControl_Reader
 from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
 from OCC.Core.StlAPI import StlAPI_Writer
@@ -10,14 +11,23 @@ import os
 
 app = FastAPI()
 
-# Update CORS configuration
-# Update CORS configuration - remove credentials requirement
+# Add trusted hosts
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"]
+)
+
+# Configure CORS with specific origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins temporarily
-    allow_credentials=False,  # Change this to False
+    allow_origins=[
+        "https://sequence-app-xpou.vercel.app",
+        "http://localhost:3000"
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 @app.get("/test-cors")
