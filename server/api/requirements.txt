@@ -1,4 +1,4 @@
 flask
 flask-cors
 python-dotenv
-pythonocc-core
+opencascade
