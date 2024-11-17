@@ -94,9 +94,9 @@ export default function SequenceSteps({ selectedPartInfo }) {
   }
 
   return (
-    <div className="space-y-8 w-full">
+    <div className="space-y-8">
       {/* Add Step Form */}
-      <form onSubmit={handleAddStep} className="space-y-6 w-full">
+      <form onSubmit={handleAddStep} className="space-y-4">
         {currentPartInfo && (
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
@@ -128,32 +128,31 @@ export default function SequenceSteps({ selectedPartInfo }) {
           </motion.div>
         )}
 
-        {/* Completely separate the input and button */}
-        <div className="w-full space-y-3">
-          <textarea
-            value={newStep}
-            onChange={(e) => setNewStep(e.target.value)}
-            placeholder="Step description..."
-            rows={3}
-            className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
-              placeholder:text-gray-500 text-gray-200 resize-none
-              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
-              transition-all duration-200"
-          />
-          <button
-            type="submit"
-            disabled={!newStep.trim()}
-            className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 
-              text-white rounded-xl hover:from-blue-600 hover:to-blue-700 
-              disabled:opacity-50 disabled:cursor-not-allowed
-              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-              focus:ring-offset-gray-900 transition-all duration-200 
-              flex items-center justify-center gap-2"
-          >
-            <FiPlus className="w-4 h-4" />
-            <span>Add Step</span>
-          </button>
-        </div>
+        {/* Input and button in separate divs */}
+        <input
+          type="text"
+          value={newStep}
+          onChange={(e) => setNewStep(e.target.value)}
+          placeholder="Add step description..."
+          className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
+            placeholder:text-gray-500 text-gray-200
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+            transition-all duration-200"
+        />
+        
+        <button
+          type="submit"
+          disabled={!newStep.trim()}
+          className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 
+            text-white rounded-xl hover:from-blue-600 hover:to-blue-700 
+            disabled:opacity-50 disabled:cursor-not-allowed
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+            focus:ring-offset-gray-900 transition-all duration-200 
+            flex items-center justify-center gap-2"
+        >
+          <FiPlus className="w-4 h-4" />
+          <span>Add Step</span>
+        </button>
       </form>
 
       {/* Export Button */}
