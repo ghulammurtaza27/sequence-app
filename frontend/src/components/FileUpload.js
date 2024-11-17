@@ -42,8 +42,8 @@ export default function FileUpload({ onUpload, currentFile }) {
         {...getRootProps()}
         className={`relative group cursor-pointer transition-all duration-300
           ${isDragActive 
-            ? 'bg-blue-50 border-blue-300' 
-            : 'bg-gray-50 border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+            ? 'bg-blue-900/30 border-blue-500/50' 
+            : 'bg-gray-700/50 border-gray-600 hover:border-blue-500/50 hover:bg-blue-900/20'
           } 
           border-2 border-dashed rounded-xl p-8`}
       >
@@ -52,11 +52,11 @@ export default function FileUpload({ onUpload, currentFile }) {
         <div className="space-y-4 text-center">
           {/* Upload Icon */}
           <div className={`mx-auto w-12 h-12 flex items-center justify-center rounded-full
-            ${isDragActive ? 'bg-blue-100' : 'bg-gray-100 group-hover:bg-blue-100'}
+            ${isDragActive ? 'bg-blue-900/50' : 'bg-gray-600/50 group-hover:bg-blue-900/50'}
             transition-colors duration-300`}
           >
             <svg
-              className={`w-6 h-6 ${isDragActive ? 'text-blue-600' : 'text-gray-600 group-hover:text-blue-600'}`}
+              className={`w-6 h-6 ${isDragActive ? 'text-blue-400' : 'text-gray-400 group-hover:text-blue-400'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -73,7 +73,7 @@ export default function FileUpload({ onUpload, currentFile }) {
           {/* Text Content */}
           <div className="space-y-2">
             <p className={`text-sm font-medium
-              ${isDragActive ? 'text-blue-700' : 'text-gray-700'}`}
+              ${isDragActive ? 'text-blue-400' : 'text-gray-300'}`}
             >
               {isDragActive
                 ? 'Drop your file here'
@@ -82,7 +82,7 @@ export default function FileUpload({ onUpload, currentFile }) {
                 : 'Click or drag file to upload'}
             </p>
             <p className={`text-xs
-              ${isDragActive ? 'text-blue-500' : 'text-gray-500'}`}
+              ${isDragActive ? 'text-blue-500' : 'text-gray-400'}`}
             >
               Supports STEP files (.step, .stp)
             </p>
@@ -90,11 +90,11 @@ export default function FileUpload({ onUpload, currentFile }) {
 
           {/* Current File Display */}
           {currentFile && (
-            <div className="mt-4 py-3 px-4 bg-white rounded-lg shadow-sm border border-gray-200">
+            <div className="mt-4 py-3 px-4 bg-gray-700/50 rounded-lg border border-gray-600">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-blue-100">
+                <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-blue-900/30">
                   <svg
-                    className="w-4 h-4 text-blue-600"
+                    className="w-4 h-4 text-blue-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -108,10 +108,10 @@ export default function FileUpload({ onUpload, currentFile }) {
                   </svg>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-gray-200 truncate">
                     {currentFile.name}
                   </p>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-400">
                     {(currentFile.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
@@ -122,10 +122,10 @@ export default function FileUpload({ onUpload, currentFile }) {
 
         {/* Loading Overlay */}
         {isLoading && (
-          <div className="absolute inset-0 bg-white/75 flex items-center justify-center rounded-xl">
+          <div className="absolute inset-0 bg-gray-900/75 flex items-center justify-center rounded-xl backdrop-blur-sm">
             <div className="flex flex-col items-center gap-2">
               <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-              <p className="text-sm text-gray-600">Processing...</p>
+              <p className="text-sm text-blue-400">Processing...</p>
             </div>
           </div>
         )}
@@ -133,8 +133,8 @@ export default function FileUpload({ onUpload, currentFile }) {
 
       {/* Error Message */}
       {error && (
-        <div className="mt-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600 flex items-center gap-2">
+        <div className="mt-3 px-4 py-3 bg-red-900/30 border border-red-500/30 rounded-lg">
+          <p className="text-sm text-red-400 flex items-center gap-2">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
