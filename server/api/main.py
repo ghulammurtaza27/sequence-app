@@ -18,15 +18,19 @@ app.add_middleware(
 )
 
 
-# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://sequence-app-xpou.vercel.app"],
+    allow_origins=[
+        "https://sequence-app-xpou.vercel.app",
+        "http://localhost:3000"
+    ],
     allow_credentials=False,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
-    expose_headers=["*"],
+    expose_headers=["*"]
 )
+
+
 
 @app.middleware("http")
 async def add_cors_headers(request, call_next):
@@ -49,7 +53,10 @@ async def options_route(path: str):
 
 @app.get("/health")
 async def health_check():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "message": "API is running"
+    }
 
 @app.get("/test")
 async def test_endpoint():
