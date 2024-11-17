@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 import { motion } from 'framer-motion'
-import { FiMove, FiDownload, FiTrash2 } from 'react-icons/fi'
+import { FiMove, FiDownload, FiTrash2, FiPlus } from 'react-icons/fi'
 import { jsPDF } from 'jspdf'
 
 export default function SequenceSteps({ selectedPartInfo }) {
@@ -94,39 +94,60 @@ export default function SequenceSteps({ selectedPartInfo }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Add Step Form */}
-      <form onSubmit={handleAddStep} className="space-y-4">
+      <form onSubmit={handleAddStep} className="space-y-6">
         {currentPartInfo && (
-          <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg">
-            <p className="text-sm font-medium text-blue-700 mb-2">
-              Selected Part: {currentPartInfo.partIndex + 1}
-            </p>
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200 rounded-2xl"
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-semibold text-blue-600">
+                  {currentPartInfo.partIndex + 1}
+                </span>
+              </div>
+              <p className="text-sm font-medium text-blue-800">
+                Selected Part
+              </p>
+            </div>
             {currentPartInfo.screenshot && (
-              <img
-                src={currentPartInfo.screenshot}
-                alt="Part preview"
-                className="w-full h-32 object-contain bg-white rounded-md shadow-sm"
-              />
+              <div className="relative group">
+                <img
+                  src={currentPartInfo.screenshot}
+                  alt="Part preview"
+                  className="w-full h-40 object-contain bg-white rounded-xl shadow-sm 
+                    ring-1 ring-blue-100 transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent 
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+              </div>
             )}
-          </div>
+          </motion.div>
         )}
 
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <input
             type="text"
             value={newStep}
             onChange={(e) => setNewStep(e.target.value)}
             placeholder="Add step description..."
-            className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-lg 
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="flex-1 px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl
+              placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 
+              focus:border-transparent transition-all duration-200"
           />
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 
-                     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            disabled={!newStep.trim()}
+            className="px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 
+              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+              transition-all duration-200 flex items-center gap-2"
           >
-            Add Step
+            <FiPlus className="w-4 h-4" />
+            <span>Add Step</span>
           </button>
         </div>
       </form>
@@ -137,11 +158,13 @@ export default function SequenceSteps({ selectedPartInfo }) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={exportToPDF}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500 
-                   text-white rounded-lg hover:bg-green-600 transition-colors"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 
+            bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl 
+            hover:from-emerald-600 hover:to-green-600 shadow-sm
+            transition-all duration-200"
         >
-          <FiDownload className="w-4 h-4" />
-          Export as PDF
+          <FiDownload className="w-5 h-5" />
+          <span className="font-medium">Export Assembly Instructions</span>
         </motion.button>
       )}
 
@@ -152,61 +175,76 @@ export default function SequenceSteps({ selectedPartInfo }) {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="space-y-3"
+              className="space-y-4"
             >
               {steps.map((step, index) => (
                 <Draggable key={step.id} draggableId={step.id} index={index}>
                   {(provided, snapshot) => (
-                    <div
+                    <motion.div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      className={`group p-4 bg-white rounded-lg border ${
-                        snapshot.isDragging ? 'border-blue-300 shadow-lg' : 'border-gray-200'
-                      } hover:border-gray-300 transition-all duration-200`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`group p-5 bg-white rounded-xl border ${
+                        snapshot.isDragging 
+                          ? 'border-blue-300 shadow-lg ring-2 ring-blue-500/50' 
+                          : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                      } transition-all duration-200`}
                     >
                       <div className="flex items-start gap-4">
                         <div
                           {...provided.dragHandleProps}
-                          className="flex-shrink-0 w-6 h-6 flex items-center justify-center 
-                                   text-gray-400 hover:text-gray-600 cursor-move"
+                          className="flex-shrink-0 w-8 h-8 flex items-center justify-center 
+                            bg-gray-50 rounded-lg text-gray-400 hover:text-gray-600 
+                            hover:bg-gray-100 cursor-move transition-colors duration-200"
                         >
                           <FiMove className="w-4 h-4" />
                         </div>
 
                         {step.screenshot && (
-                          <div className="w-32 flex-shrink-0">
-                            <img
-                              src={step.screenshot}
-                              alt={`Step ${index + 1} preview`}
-                              className="w-full aspect-square object-contain bg-gray-50 rounded-md"
-                            />
+                          <div className="w-40 flex-shrink-0">
+                            <div className="relative group/image rounded-lg overflow-hidden">
+                              <img
+                                src={step.screenshot}
+                                alt={`Step ${index + 1} preview`}
+                                className="w-full aspect-square object-contain bg-gray-50 
+                                  transition-transform duration-300 group-hover/image:scale-105"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 
+                                to-transparent opacity-0 group-hover/image:opacity-100 
+                                transition-opacity duration-300" />
+                            </div>
                           </div>
                         )}
 
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <div>
-                              <span className="font-medium text-gray-900">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="px-3 py-1 bg-gray-100 text-gray-700 
+                                rounded-full text-sm font-medium">
                                 Step {index + 1}
                               </span>
                               {step.partIndex !== undefined && (
-                                <span className="ml-2 text-sm text-gray-500">
-                                  (Part {step.partIndex + 1})
+                                <span className="text-sm text-gray-500">
+                                  Part {step.partIndex + 1}
                                 </span>
                               )}
                             </div>
                             <button
                               onClick={() => handleRemoveStep(index)}
-                              className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 
-                                       hover:text-red-500 rounded transition-all duration-200"
+                              className="opacity-0 group-hover:opacity-100 p-2 text-gray-400 
+                                hover:text-red-500 hover:bg-red-50 rounded-lg
+                                transition-all duration-200"
                             >
                               <FiTrash2 className="w-4 h-4" />
                             </button>
                           </div>
-                          <p className="text-gray-600 break-words">{step.text}</p>
+                          <p className="text-gray-600 break-words leading-relaxed">
+                            {step.text}
+                          </p>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </Draggable>
               ))}
@@ -217,8 +255,16 @@ export default function SequenceSteps({ selectedPartInfo }) {
       </DragDropContext>
 
       {steps.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
-          No steps added yet. Select a part and add your first step.
+        <div className="text-center py-12 px-6 bg-gray-50 rounded-xl border-2 
+          border-dashed border-gray-200">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center 
+            justify-center mx-auto mb-4">
+            <FiMove className="w-8 h-8 text-gray-400" />
+          </div>
+          <p className="text-gray-500 mb-1">No steps added yet</p>
+          <p className="text-sm text-gray-400">
+            Select a part and add your first step to get started
+          </p>
         </div>
       )}
     </div>
