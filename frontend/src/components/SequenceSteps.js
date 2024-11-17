@@ -128,7 +128,7 @@ export default function SequenceSteps({ selectedPartInfo }) {
           </motion.div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col gap-3">
           <input
             type="text"
             value={newStep}
