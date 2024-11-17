@@ -6,10 +6,13 @@ aptPkgs = [
     "build-essential",
     "gcc"
 ]
+cmds = [
+    "export PATH=/usr/bin/python3.9:$PATH",
+    "python3.9 --version"  # Confirm Python 3.9 is available
+]
 
 [phases.install]
 cmds = [
     "python3.9 -m pip install --upgrade pip",
     "python3.9 -m pip install -r requirements.txt"
 ]
-
