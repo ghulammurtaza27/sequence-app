@@ -4,6 +4,7 @@ from fastapi.responses import Response, JSONResponse
 from OCC.Core.STEPControl import STEPControl_Reader
 from OCC.Core.StlAPI import StlAPI_Writer
 from OCC.Core.BRepMesh import BRepMesh_IncrementalMesh
+from OCC.Core.IFSelect import IFSelect_RetDone  # Add this import
 import tempfile
 import os
 
