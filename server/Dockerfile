@@ -1,4 +1,4 @@
-# Use a more complete Python image
+# Use Python base image
 FROM python:3.9
 
 # Set working directory
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first
-COPY requirements.txt .
+COPY ./requirements.txt /app/requirements.txt
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -22,7 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install --no-cache-dir pythonocc-core==7.7.0
 
 # Copy the rest of the application
-COPY . .
+COPY . /app/
 
 # Expose port
 EXPOSE 8000
