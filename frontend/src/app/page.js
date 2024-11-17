@@ -84,16 +84,91 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Header Section - Updated for dark theme */}
-      <header className="bg-gray-900 border-b border-gray-800">
-        <div className="container mx-auto px-8 py-12">
-          <h1 className="text-5xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-            Run Better Design Reviews
-          </h1>
-          <p className="text-xl text-gray-400 mt-6 max-w-2xl">
-            Create and manage assembly instructions with ease. Collaborate on design reviews and make better product decisions.
-          </p>
+      {/* Enhanced Hero Section */}
+      <header className="relative bg-gray-900 border-b border-gray-800 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-purple-500/10"></div>
+
+        <div className="relative container mx-auto px-8 py-24">
+          <div className="max-w-5xl mx-auto">
+            {/* Main Content */}
+            <div className="text-center mb-16">
+              <h1 className="text-6xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-8">
+                Transform Your Design Reviews
+              </h1>
+              <p className="text-2xl text-gray-400 mb-8 leading-relaxed">
+                Create interactive assembly instructions, collaborate on design decisions, 
+                and streamline your product development workflow.
+              </p>
+              
+              {/* Feature Pills */}
+              <div className="flex flex-wrap justify-center gap-4 mb-12">
+                <span className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400">
+                  3D Model Visualization
+                </span>
+                <span className="px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400">
+                  Step-by-Step Instructions
+                </span>
+                <span className="px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400">
+                  PDF Export
+                </span>
+                <span className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400">
+                  Real-time Collaboration
+                </span>
+              </div>
+            </div>
+
+            {/* Key Features Grid */}
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Interactive 3D Viewer</h3>
+                <p className="text-gray-400">View and interact with your 3D models directly in the browser. Select parts and create assembly steps with ease.</p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+                <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Automated Screenshots</h3>
+                <p className="text-gray-400">Automatically capture part views as you create assembly steps. Perfect for documentation and guides.</p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
+                <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Export & Share</h3>
+                <p className="text-gray-400">Generate professional PDF documents with your assembly instructions ready to share with your team.</p>
+              </div>
+            </div>
+
+            {/* CTA Section */}
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 text-gray-400 bg-gray-800/50 backdrop-blur-sm rounded-xl px-6 py-3 border border-gray-700">
+                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <span>Get started by uploading your first 3D model below</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Decorative Elements */}
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
       </header>
 
       <main className="container mx-auto px-8 py-12">
