@@ -1,5 +1,5 @@
-# Use a base image with OpenCASCADE pre-installed
-FROM conda/miniconda3
+# Use Python base image
+FROM python:3.9
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -8,27 +8,25 @@ ENV PYTHONUNBUFFERED=1
 # Set work directory
 WORKDIR /code
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    python3-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies and conda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+    bash miniconda.sh -b -p /opt/conda && \
+    rm miniconda.sh
 
-# Create conda environment
-RUN conda create -n cad-env python=3.9 \
-    && conda install -n cad-env -c conda-forge pythonocc-core=7.7.0
+# Add conda to path
+ENV PATH="/opt/conda/bin:$PATH"
 
-# Install Python dependencies
+# Install OpenCASCADE using conda
+RUN conda install -y -c conda-forge pythonocc-core=7.7.0
+
+# Copy and install requirements
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Copy project files
 COPY . .
 
-# Set up shell to use conda environment
-SHELL ["conda", "run", "-n", "cad-env", "/bin/bash", "-c"]
-
 # Command to run the application
-CMD ["conda", "run", "--no-capture-output", "-n", "cad-env", "python", "start.py"]
+CMD ["python", "start.py"]
 
 
