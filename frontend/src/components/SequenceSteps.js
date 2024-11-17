@@ -94,9 +94,9 @@ export default function SequenceSteps({ selectedPartInfo }) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full">
       {/* Add Step Form */}
-      <form onSubmit={handleAddStep} className="space-y-6">
+      <form onSubmit={handleAddStep} className="space-y-6 w-full">
         {currentPartInfo && (
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
@@ -128,21 +128,22 @@ export default function SequenceSteps({ selectedPartInfo }) {
           </motion.div>
         )}
 
-        <div className="flex flex-col gap-3">
-          <input
-            type="text"
+        {/* Completely separate the input and button */}
+        <div className="w-full space-y-3">
+          <textarea
             value={newStep}
             onChange={(e) => setNewStep(e.target.value)}
-            placeholder="Add step description..."
-            className="flex-1 px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
-              placeholder:text-gray-500 text-gray-200
+            placeholder="Step description..."
+            rows={3}
+            className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
+              placeholder:text-gray-500 text-gray-200 resize-none
               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
               transition-all duration-200"
           />
           <button
             type="submit"
             disabled={!newStep.trim()}
-            className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 
+            className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 
               text-white rounded-xl hover:from-blue-600 hover:to-blue-700 
               disabled:opacity-50 disabled:cursor-not-allowed
               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
