@@ -115,9 +115,6 @@ export default function Home() {
                 <span className="px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400">
                   PDF Export
                 </span>
-                <span className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400">
-                  Real-time Collaboration
-                </span>
               </div>
             </div>
 
