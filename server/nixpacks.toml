@@ -4,18 +4,24 @@ aptPkgs = [
     "python3.9-dev",
     "python3-pip",
     "build-essential",
-    "gcc"
-]
-
-cmds = [
-    "python3.9 --version",  # Ensure Python is installed
-    "export PATH=/usr/bin/python3.9:$PATH"  # Explicitly add Python to PATH
+    "gcc",
+    "wget",
+    "bzip2"
 ]
 
 [phases.install]
 cmds = [
+    # Install miniconda
+    "wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh",
+    "bash miniconda.sh -b -p /opt/conda",
+    "rm miniconda.sh",
+    # Add conda to path
+    "export PATH=/opt/conda/bin:$PATH",
+    # Install dependencies
+    "conda install -y -c conda-forge pythonocc-core=7.7.0",
     "python3.9 -m pip install --upgrade pip",
     "python3.9 -m pip install -r requirements.txt"
 ]
+
 [start]
-cmd = "python3.9 start.py"
+cmd = "export PATH=/opt/conda/bin:$PATH && python3 start.py"
