@@ -11,13 +11,7 @@ import os
 
 app = FastAPI()
 
-# Add trusted hosts
-app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["*"]
-)
-
-
+# CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -32,24 +26,6 @@ app.add_middleware(
 
 
 
-@app.middleware("http")
-async def add_cors_headers(request, call_next):
-    response = await call_next(request)
-    response.headers["Access-Control-Allow-Origin"] = "https://sequence-app-xpou.vercel.app"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "*"
-    return response
-
-@app.options("/{path:path}")
-async def options_route(path: str):
-    return JSONResponse(
-        content={},
-        headers={
-            "Access-Control-Allow-Origin": "https://sequence-app-xpou.vercel.app",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "*",
-        }
-    )
 
 @app.get("/health")
 async def health_check():
@@ -57,10 +33,6 @@ async def health_check():
         "status": "ok",
         "message": "API is running"
     }
-
-@app.get("/test")
-async def test_endpoint():
-    return {"message": "API is working"}
 
 
 @app.post("/api/convert-step")
@@ -107,12 +79,12 @@ async def convert_step_to_stl(file: UploadFile = File(...)):
                     stl_content = stl_file.read()
 
                 return Response(
-                    content=stl_content,
-                    media_type='application/octet-stream',
+                    content=stl_content,  # Your converted STL content
+                    media_type="application/octet-stream",
                     headers={
-                        'Content-Disposition': f'attachment; filename=converted.stl'
+                        "Content-Disposition": f'attachment; filename="{file.filename.replace(".step", ".stl")}"'
                     }
-                )
+        )
             else:
                 raise HTTPException(
                     status_code=400,
@@ -126,11 +98,11 @@ async def convert_step_to_stl(file: UploadFile = File(...)):
             if os.path.exists(temp_stl.name):
                 os.unlink(temp_stl.name)
 
-    except Exception as e:
-        print(f"Error processing file: {str(e)}")
+     except Exception as e:
+        print(f"Error: {str(e)}")
         return JSONResponse(
             status_code=500,
-            content={"detail": str(e)}
+            content={"error": str(e)}
         )
 
 if __name__ == "__main__":
