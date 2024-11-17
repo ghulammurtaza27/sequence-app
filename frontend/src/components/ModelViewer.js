@@ -107,7 +107,7 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
 
         const scene = new THREE.Scene();
         sceneRef.current = scene;
-        scene.background = new THREE.Color(0xffffff);
+        scene.background = new THREE.Color(0x1f2937);
 
         const camera = new THREE.PerspectiveCamera(
           75,
@@ -144,9 +144,9 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
           try {
             const geometry = loader.parse(e.target.result);
             const material = new THREE.MeshPhongMaterial({
-              color: 0x808080,
-              specular: 0x111111,
-              shininess: 200
+              color: 0x9ca3af,
+              specular: 0x666666,
+              shininess: 100
             });
 
             const mesh = new THREE.Mesh(geometry, material);
@@ -195,17 +195,7 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
 
     loadModelFile();
 
-    return () => {
-      if (rendererRef.current) {
-        if (containerRef.current?.contains(rendererRef.current.domElement)) {
-          containerRef.current.removeChild(rendererRef.current.domElement);
-        }
-        rendererRef.current.dispose();
-      }
-      if (sceneRef.current) {
-        sceneRef.current.clear();
-      }
-    };
+    return cleanup;
   }, [modelFile]);
 
   const takeScreenshot = () => {
@@ -220,10 +210,10 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
   }
 
   return (
-    <div className="relative w-full h-[500px]">
+    <div className="relative w-full h-[600px]">
       <div 
         ref={containerRef} 
-        className="w-full h-full rounded-lg overflow-hidden bg-gray-50"
+        className="w-full h-full rounded-xl overflow-hidden bg-gray-800 border border-gray-700"
         style={{ touchAction: 'none' }}
       />
       
@@ -232,30 +222,55 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
           e.stopPropagation()
           takeScreenshot()
         }}
-        className="absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow transition-colors"
+        className="absolute top-4 right-4 bg-gradient-to-r from-blue-500 to-blue-600 
+          hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2.5 rounded-xl
+          shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-2
+          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+          focus:ring-offset-gray-800"
       >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
         Take Screenshot
       </button>
 
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
-            <p className="mt-4 text-sm text-gray-600">Loading model...</p>
+            <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 
+              rounded-full animate-spin mx-auto"/>
+            <p className="mt-4 text-gray-300 font-medium">Loading model...</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80">
-          <div className="bg-white p-4 rounded-lg shadow-lg max-w-md mx-4">
-            <p className="text-red-600 text-sm">{error}</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm">
+          <div className="bg-gray-800 p-6 rounded-xl shadow-xl border border-red-500/20 max-w-md mx-4">
+            <div className="flex items-center gap-3 text-red-400 mb-2">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-semibold">Error Loading Model</span>
+            </div>
+            <p className="text-gray-400">{error}</p>
           </div>
         </div>
       )}
 
-      <div className="absolute bottom-4 right-4 text-sm text-gray-500">
-        Tip: Position the model as desired and click Take Screenshot.
+      <div className="absolute bottom-4 right-4 bg-gray-800/90 backdrop-blur-sm px-4 py-2 
+        rounded-lg border border-gray-700 shadow-lg">
+        <div className="flex items-center gap-2 text-gray-400">
+          <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span className="text-sm">Position the model and click Take Screenshot</span>
+        </div>
       </div>
     </div>
   )
