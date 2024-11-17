@@ -94,22 +94,22 @@ export default function SequenceSteps({ selectedPartInfo }) {
   }
 
   return (
-    <div className="space-y-6 md:space-y-8">
+    <div className="space-y-6 w-full px-4 sm:px-0">
       {/* Add Step Form */}
-      <form onSubmit={handleAddStep} className="space-y-4 md:space-y-6">
+      <form onSubmit={handleAddStep} className="space-y-4 w-full">
         {currentPartInfo && (
           <motion.div 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="p-4 md:p-6 bg-gray-800/50 border border-gray-700 rounded-xl"
+            className="p-4 bg-gray-800/50 border border-gray-700 rounded-xl w-full"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-8 bg-blue-900/50 rounded-full flex items-center justify-center">
-                <span className="text-sm font-semibold text-blue-400">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-sm font-semibold text-blue-600">
                   {currentPartInfo.partIndex + 1}
                 </span>
               </div>
-              <p className="text-sm font-medium text-gray-300">
+              <p className="text-sm font-medium text-blue-800">
                 Selected Part
               </p>
             </div>
@@ -118,8 +118,8 @@ export default function SequenceSteps({ selectedPartInfo }) {
                 <img
                   src={currentPartInfo.screenshot}
                   alt="Part preview"
-                  className="w-full h-32 md:h-40 object-contain bg-gray-900/50 rounded-xl 
-                    ring-1 ring-gray-700 transition-transform duration-300 group-hover:scale-[1.02]"
+                  className="w-full h-40 object-contain bg-white rounded-xl shadow-sm 
+                    ring-1 ring-blue-100 transition-transform duration-300 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 to-transparent 
                   opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
@@ -128,26 +128,48 @@ export default function SequenceSteps({ selectedPartInfo }) {
           </motion.div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        {/* Input Fields Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mb-3">
           <input
             type="text"
+            placeholder="Part name..."
+            className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
+              placeholder:text-gray-500 text-gray-200
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+              transition-all duration-200"
+          />
+          <input
+            type="text"
+            placeholder="Required tools..."
+            className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
+              placeholder:text-gray-500 text-gray-200
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+              transition-all duration-200"
+          />
+        </div>
+
+        {/* Description and Add Button */}
+        <div className="flex flex-col gap-3 w-full">
+          <textarea
             value={newStep}
             onChange={(e) => setNewStep(e.target.value)}
-            placeholder="Add step description..."
-            className="flex-1 px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
-              placeholder:text-gray-500 text-gray-200
+            placeholder="Step description..."
+            rows={3}
+            className="w-full px-4 py-3 text-sm bg-gray-800 border border-gray-700 rounded-xl
+              placeholder:text-gray-500 text-gray-200 resize-none
               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent 
               transition-all duration-200"
           />
           <button
             type="submit"
             disabled={!newStep.trim()}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl 
+            className="w-full sm:w-auto sm:ml-auto px-6 py-3 bg-gradient-to-r 
+              from-blue-500 to-blue-600 text-white rounded-xl 
               hover:from-blue-600 hover:to-blue-700 
-              disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-500
+              disabled:opacity-50 disabled:cursor-not-allowed
               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-              focus:ring-offset-gray-900 transition-all duration-200 flex items-center 
-              justify-center gap-2 w-full sm:w-auto"
+              focus:ring-offset-gray-900 transition-all duration-200 
+              flex items-center justify-center gap-2"
           >
             <FiPlus className="w-4 h-4" />
             <span>Add Step</span>
@@ -178,7 +200,7 @@ export default function SequenceSteps({ selectedPartInfo }) {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="space-y-4"
+              className="space-y-4 w-full"
             >
               {steps.map((step, index) => (
                 <Draggable key={step.id} draggableId={step.id} index={index}>
@@ -188,62 +210,52 @@ export default function SequenceSteps({ selectedPartInfo }) {
                       {...provided.draggableProps}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className={`group p-4 md:p-5 bg-gray-800 rounded-xl border ${
+                      className={`group p-4 bg-gray-800 rounded-xl border w-full ${
                         snapshot.isDragging 
                           ? 'border-blue-500/50 shadow-lg ring-2 ring-blue-500/50' 
                           : 'border-gray-700 hover:border-blue-500/30'
                       } transition-all duration-200`}
                     >
-                      <div className="flex flex-col sm:flex-row items-start gap-4">
-                        <div
-                          {...provided.dragHandleProps}
-                          className="flex-shrink-0 w-8 h-8 flex items-center justify-center 
-                            bg-gray-700 rounded-lg text-gray-400 hover:text-gray-300 
-                            hover:bg-gray-600 cursor-move transition-colors duration-200"
-                        >
-                          <FiMove className="w-4 h-4" />
+                      {/* Step Content */}
+                      <div className="flex flex-col w-full gap-4">
+                        {/* Header */}
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-3">
+                            <div
+                              {...provided.dragHandleProps}
+                              className="flex-shrink-0 w-8 h-8 flex items-center justify-center 
+                                bg-gray-700 rounded-lg text-gray-400 hover:text-gray-300 
+                                hover:bg-gray-600 cursor-move transition-colors duration-200"
+                            >
+                              <FiMove className="w-4 h-4" />
+                            </div>
+                            <span className="px-3 py-1 bg-gray-700 text-gray-300 
+                              rounded-full text-sm font-medium">
+                              Step {index + 1}
+                            </span>
+                          </div>
+                          <button
+                            onClick={() => handleRemoveStep(index)}
+                            className="p-2 text-gray-400 hover:text-red-400 
+                              hover:bg-red-900/30 rounded-lg transition-all duration-200"
+                          >
+                            <FiTrash2 className="w-4 h-4" />
+                          </button>
                         </div>
 
-                        {step.screenshot && (
-                          <div className="w-full sm:w-40 flex-shrink-0">
-                            <div className="relative group/image rounded-lg overflow-hidden">
+                        {/* Screenshot and Description */}
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          {step.screenshot && (
+                            <div className="w-full sm:w-40 h-40 flex-shrink-0">
                               <img
                                 src={step.screenshot}
-                                alt={`Step ${index + 1} preview`}
-                                className="w-full aspect-square object-contain bg-gray-700/50 
-                                  transition-transform duration-300 group-hover/image:scale-105"
+                                alt={`Step ${index + 1}`}
+                                className="w-full h-full object-contain bg-gray-700/50 
+                                  rounded-lg"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 
-                                to-transparent opacity-0 group-hover/image:opacity-100 
-                                transition-opacity duration-300" />
                             </div>
-                          </div>
-                        )}
-
-                        <div className="flex-1 min-w-0 w-full">
-                          <div className="flex flex-col sm:flex-row sm:items-center 
-                            justify-between gap-2 mb-3">
-                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                              <span className="px-3 py-1 bg-gray-700 text-gray-300 
-                                rounded-full text-sm font-medium">
-                                Step {index + 1}
-                              </span>
-                              {step.partIndex !== undefined && (
-                                <span className="text-sm text-gray-400">
-                                  Part {step.partIndex + 1}
-                                </span>
-                              )}
-                            </div>
-                            <button
-                              onClick={() => handleRemoveStep(index)}
-                              className="sm:opacity-0 group-hover:opacity-100 p-2 text-gray-400 
-                                hover:text-red-400 hover:bg-red-900/30 rounded-lg
-                                transition-all duration-200"
-                            >
-                              <FiTrash2 className="w-4 h-4" />
-                            </button>
-                          </div>
-                          <p className="text-gray-300 break-words leading-relaxed">
+                          )}
+                          <p className="text-gray-300 flex-1">
                             {step.text}
                           </p>
                         </div>
@@ -258,9 +270,10 @@ export default function SequenceSteps({ selectedPartInfo }) {
         </Droppable>
       </DragDropContext>
 
+      {/* Empty State */}
       {steps.length === 0 && (
-        <div className="text-center py-8 md:py-12 px-4 md:px-6 bg-gray-800/50 rounded-xl 
-          border-2 border-dashed border-gray-700">
+        <div className="text-center py-8 px-4 bg-gray-800/50 rounded-xl 
+          border-2 border-dashed border-gray-700 w-full">
           <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center 
             justify-center mx-auto mb-4">
             <FiMove className="w-8 h-8 text-gray-400" />
