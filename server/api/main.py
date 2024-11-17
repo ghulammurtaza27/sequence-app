@@ -24,6 +24,10 @@ app.add_middleware(
     expose_headers=["Content-Disposition"]
 )
 
+@app.get("/test-cors")
+async def test_cors():
+    return {"message": "CORS is working"}
+
 # Health check endpoint
 @app.get("/health")
 async def health_check():

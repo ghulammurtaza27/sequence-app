@@ -8,11 +8,17 @@ export const uploadFile = async (file) => {
     const response = await fetch(`${API_URL}/api/convert-step`, {
       method: 'POST',
       body: formData,
-      // Don't set Content-Type when using FormData
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        // Don't set Content-Type when using FormData
+        'Accept': 'application/json',
+      },
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.text();
+      throw new Error(errorData || `HTTP error! status: ${response.status}`);
     }
 
     return await response.blob();
