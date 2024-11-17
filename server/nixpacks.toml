@@ -6,9 +6,10 @@ aptPkgs = [
     "build-essential",
     "gcc"
 ]
+
 cmds = [
-    "export PATH=/usr/bin/python3.9:$PATH",
-    "python3.9 --version"  # Confirm Python 3.9 is available
+    "python3.9 --version",  # Ensure Python is installed
+    "export PATH=/usr/bin/python3.9:$PATH"  # Explicitly add Python to PATH
 ]
 
 [phases.install]
