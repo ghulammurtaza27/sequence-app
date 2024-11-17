@@ -1,16 +1,16 @@
 // src/components/FileUpload.js
 'use client'
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useDropzone } from 'react-dropzone';
 
 export default function FileUpload({ onUpload, currentFile }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
+  const onDrop = useCallback(async (acceptedFiles) => {
+    const file = acceptedFiles[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.name.toLowerCase().endsWith('.step') && !file.name.toLowerCase().endsWith('.stp')) {
       setError('Please upload a STEP file (.step or .stp)');
       return;
@@ -19,45 +19,133 @@ export default function FileUpload({ onUpload, currentFile }) {
     try {
       setIsLoading(true);
       setError(null);
-      
-      // Pass the file directly to parent component
       onUpload(file);
-      
     } catch (error) {
       setError('Error processing file. Please try again.');
       console.error('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [onUpload]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'application/step': ['.step', '.stp'],
+    },
+    multiple: false,
+  });
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-        <input
-          type="file"
-          accept=".step,.stp"
-          onChange={handleFileUpload}
-          className="hidden"
-          id="file-upload"
-          disabled={isLoading}
-        />
-        <label
-          htmlFor="file-upload"
-          className={`cursor-pointer inline-block px-4 py-2 bg-blue-500 text-white rounded-lg 
-            ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
-        >
-          {isLoading ? 'Processing...' : currentFile ? 'Change File' : 'Upload STEP File'}
-        </label>
-        {currentFile && (
-          <p className="mt-2 text-sm text-gray-600">
-            Current file: {currentFile.name}
-          </p>
-        )}
-        {error && (
-          <p className="text-red-500 mt-2">{error}</p>
+    <div className="max-w-xl mx-auto">
+      <div
+        {...getRootProps()}
+        className={`relative group cursor-pointer transition-all duration-300
+          ${isDragActive 
+            ? 'bg-blue-50 border-blue-300' 
+            : 'bg-gray-50 border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+          } 
+          border-2 border-dashed rounded-xl p-8`}
+      >
+        <input {...getInputProps()} disabled={isLoading} />
+        
+        <div className="space-y-4 text-center">
+          {/* Upload Icon */}
+          <div className={`mx-auto w-12 h-12 flex items-center justify-center rounded-full
+            ${isDragActive ? 'bg-blue-100' : 'bg-gray-100 group-hover:bg-blue-100'}
+            transition-colors duration-300`}
+          >
+            <svg
+              className={`w-6 h-6 ${isDragActive ? 'text-blue-600' : 'text-gray-600 group-hover:text-blue-600'}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+              />
+            </svg>
+          </div>
+
+          {/* Text Content */}
+          <div className="space-y-2">
+            <p className={`text-sm font-medium
+              ${isDragActive ? 'text-blue-700' : 'text-gray-700'}`}
+            >
+              {isDragActive
+                ? 'Drop your file here'
+                : currentFile
+                ? 'Click or drag to replace file'
+                : 'Click or drag file to upload'}
+            </p>
+            <p className={`text-xs
+              ${isDragActive ? 'text-blue-500' : 'text-gray-500'}`}
+            >
+              Supports STEP files (.step, .stp)
+            </p>
+          </div>
+
+          {/* Current File Display */}
+          {currentFile && (
+            <div className="mt-4 py-3 px-4 bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full bg-blue-100">
+                  <svg
+                    className="w-4 h-4 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    {currentFile.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {(currentFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/75 flex items-center justify-center rounded-xl">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-gray-600">Processing...</p>
+            </div>
+          </div>
         )}
       </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mt-3 px-4 py-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-sm text-red-600 flex items-center gap-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {error}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
