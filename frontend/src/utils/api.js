@@ -20,20 +20,17 @@ export const uploadFile = async (file) => {
       throw new Error(errorText || `HTTP error! status: ${response.status}`);
     }
 
-    // Get the blob directly instead of parsing as JSON
+    // Get the blob from response
     const blob = await response.blob();
     
-    // Create a download link for the STL file
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = file.name.replace(/\.(step|stp)$/i, '.stl');
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-
-    return { success: true, message: 'File converted and downloaded' };
+    // Create a URL for the blob
+    const blobUrl = URL.createObjectURL(blob);
+    
+    return { 
+      success: true, 
+      url: blobUrl,
+      filename: file.name.replace(/\.(step|stp)$/i, '.stl')
+    };
 
   } catch (error) {
     console.error('Error uploading file:', error);

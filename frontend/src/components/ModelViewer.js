@@ -64,20 +64,24 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/api/convert-step', {
-        method: 'POST',
-        body: formData,
-      });
+        const response = await fetch('https://sequence-app-production.up.railway.app/api/convert-step', {
+            method: 'POST',
+            body: formData,
+            mode: 'cors',
+            credentials: 'omit',
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to convert STEP file');
-      }
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server response:', errorText);
+            throw new Error('Failed to convert STEP file');
+        }
 
-      const stlBlob = await response.blob();
-      return new File([stlBlob], 'converted.stl', { type: 'model/stl' });
+        const stlBlob = await response.blob();
+        return new File([stlBlob], 'converted.stl', { type: 'model/stl' });
     } catch (error) {
-      console.error('Error converting STEP file:', error);
-      throw error;
+        console.error('Error converting STEP file:', error);
+        throw error;
     }
   };
 

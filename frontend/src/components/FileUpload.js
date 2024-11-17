@@ -1,11 +1,12 @@
 // src/components/FileUpload.js
 'use client'
 import { useState } from 'react';
-import { uploadFile } from '../utils/api';
+import ModelViewer from './ModelViewer';
 
 export default function FileUpload() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -20,24 +21,18 @@ export default function FileUpload() {
     try {
       setIsLoading(true);
       setError(null);
-      
-      const stlBlob = await uploadFile(file);
-      
-      // Create download link for STL file
-      const url = window.URL.createObjectURL(stlBlob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = file.name.replace(/\.(step|stp)$/i, '.stl');
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      setSelectedFile(file);  // Just set the file - ModelViewer will handle conversion
     } catch (error) {
-      setError('Error converting file. Please try again.');
+      setError('Error processing file. Please try again.');
       console.error('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handlePartSelect = (data) => {
+    console.log('Screenshot data:', data);
+    // Handle the screenshot and camera position data here
   };
 
   return (
@@ -56,12 +51,21 @@ export default function FileUpload() {
           className={`cursor-pointer inline-block px-4 py-2 bg-blue-500 text-white rounded-lg 
             ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
         >
-          {isLoading ? 'Converting...' : 'Upload STEP File'}
+          {isLoading ? 'Processing...' : 'Upload STEP File'}
         </label>
         {error && (
           <p className="text-red-500 mt-2">{error}</p>
         )}
       </div>
+
+      {selectedFile && (
+        <div className="mt-4">
+          <ModelViewer 
+            modelFile={selectedFile}
+            onPartSelect={handlePartSelect}
+          />
+        </div>
+      )}
     </div>
   );
 }
