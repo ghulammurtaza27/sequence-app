@@ -83,22 +83,25 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-2xl font-bold text-gray-900">Sequence App</h1>
-          <p className="text-sm text-gray-500 mt-1">Create assembly instructions with ease</p>
+    <div className="min-h-screen bg-white">
+      {/* Header Section */}
+      <header className="bg-white border-b border-gray-100">
+        <div className="container mx-auto px-6 py-8">
+          <h1 className="text-4xl font-bold text-gray-900">Run Better Design Reviews</h1>
+          <p className="text-xl text-gray-600 mt-4 max-w-2xl">
+            Create and manage assembly instructions with ease. Collaborate on design reviews and make better product decisions.
+          </p>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <main className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Upload Section */}
-            <section className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-8">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                   Upload Model
                 </h2>
                 <FileUpload onUpload={handleFileUpload} currentFile={modelFile} />
@@ -106,10 +109,10 @@ export default function Home() {
             </section>
 
             {/* Assembly Steps Section */}
-            <section className="bg-white rounded-xl shadow-sm border border-gray-100">
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900">
+            <section className="bg-white rounded-2xl shadow-lg">
+              <div className="p-8">
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-2xl font-semibold text-gray-900">
                     Assembly Steps
                   </h2>
                   {steps.length > 0 && (
@@ -118,48 +121,50 @@ export default function Home() {
                 </div>
 
                 {/* Step Input Fields */}
-                <div className="space-y-4 mb-6">
+                <div className="space-y-6 mb-8">
                   <div className="grid grid-cols-2 gap-4">
                     <input
                       type="text"
                       value={stepData.partName}
                       onChange={(e) => setStepData({ ...stepData, partName: e.target.value })}
                       placeholder="Part name..."
-                      className="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                     />
                     <input
                       type="text"
                       value={stepData.customTool}
                       onChange={(e) => setStepData({ ...stepData, customTool: e.target.value })}
                       placeholder="Required tool..."
-                      className="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                     />
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-4">
                     <input
                       type="text"
                       value={stepData.description}
                       onChange={(e) => setStepData({ ...stepData, description: e.target.value })}
                       placeholder="Step description..."
-                      className="flex-1 rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                      className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
                     />
                     <button
                       onClick={addStep}
                       disabled={!stepData.description.trim()}
-                      className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 
+                      className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 
                         disabled:opacity-50 disabled:cursor-not-allowed transition-colors
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                        font-semibold"
                     >
                       Add Step
                     </button>
                   </div>
                 </div>
 
+                {/* Screenshot notification - styling updated */}
                 {screenshotTaken && (
-                  <div className="mb-6 p-3 bg-green-50 border border-green-100 rounded-lg">
+                  <div className="mb-8 p-4 bg-green-50 border-2 border-green-100 rounded-xl">
                     <p className="text-sm text-green-700 flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       Screenshot captured! Add details to create a step.
@@ -167,11 +172,11 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Steps List */}
+                {/* Steps List - styling updated */}
                 <DragDropContext onDragEnd={handleDragEnd}>
                   <Droppable droppableId="steps">
                     {(provided) => (
-                      <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
+                      <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-6">
                         {steps.map((step, index) => (
                           <Draggable key={step.id} draggableId={step.id} index={index}>
                             {(provided, snapshot) => (
@@ -243,9 +248,9 @@ export default function Home() {
 
           {/* Right Column - Model Preview */}
           <div className="lg:sticky lg:top-8">
-            <section className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="p-8">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                   Model Preview
                 </h2>
                 {modelFile ? (
@@ -254,8 +259,8 @@ export default function Home() {
                     onPartSelect={handlePartSelect}
                   />
                 ) : (
-                  <div className="h-[500px] flex items-center justify-center bg-gray-50 rounded-lg">
-                    <p className="text-gray-500">Upload a model to preview</p>
+                  <div className="h-[600px] flex items-center justify-center bg-gray-50 rounded-xl">
+                    <p className="text-gray-500 text-lg">Upload a model to preview</p>
                   </div>
                 )}
               </div>
