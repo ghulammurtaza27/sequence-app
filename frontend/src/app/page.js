@@ -83,25 +83,30 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header Section */}
-      <header className="bg-white border-b border-gray-100">
-        <div className="container mx-auto px-6 py-8">
-          <h1 className="text-4xl font-bold text-gray-900">Run Better Design Reviews</h1>
-          <p className="text-xl text-gray-600 mt-4 max-w-2xl">
+    <div className="min-h-screen bg-gray-900">
+      {/* Header Section - Updated for dark theme */}
+      <header className="bg-gray-900 border-b border-gray-800">
+        <div className="container mx-auto px-8 py-12">
+          <h1 className="text-5xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            Run Better Design Reviews
+          </h1>
+          <p className="text-xl text-gray-400 mt-6 max-w-2xl">
             Create and manage assembly instructions with ease. Collaborate on design reviews and make better product decisions.
           </p>
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <main className="container mx-auto px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-8">
             {/* Upload Section */}
-            <section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <section className="bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700">
               <div className="p-8">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                  <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
                   Upload Model
                 </h2>
                 <FileUpload onUpload={handleFileUpload} currentFile={modelFile} />
@@ -109,10 +114,13 @@ export default function Home() {
             </section>
 
             {/* Assembly Steps Section */}
-            <section className="bg-white rounded-2xl shadow-lg">
+            <section className="bg-gray-800 rounded-3xl shadow-2xl border border-gray-700">
               <div className="p-8">
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
+                    <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
                     Assembly Steps
                   </h2>
                   {steps.length > 0 && (
@@ -120,7 +128,7 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Step Input Fields */}
+                {/* Step Input Fields - Updated styling */}
                 <div className="space-y-6 mb-8">
                   <div className="grid grid-cols-2 gap-4">
                     <input
@@ -128,14 +136,16 @@ export default function Home() {
                       value={stepData.partName}
                       onChange={(e) => setStepData({ ...stepData, partName: e.target.value })}
                       placeholder="Part name..."
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
+                        focus:border-blue-500 focus:ring-blue-500 transition-colors text-white placeholder-gray-400"
                     />
                     <input
                       type="text"
                       value={stepData.customTool}
                       onChange={(e) => setStepData({ ...stepData, customTool: e.target.value })}
                       placeholder="Required tool..."
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                      className="w-full px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
+                        focus:border-blue-500 focus:ring-blue-500 transition-colors text-white placeholder-gray-400"
                     />
                   </div>
 
@@ -145,25 +155,26 @@ export default function Home() {
                       value={stepData.description}
                       onChange={(e) => setStepData({ ...stepData, description: e.target.value })}
                       placeholder="Step description..."
-                      className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-colors"
+                      className="flex-1 px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
+                        focus:border-blue-500 focus:ring-blue-500 transition-colors text-white placeholder-gray-400"
                     />
                     <button
                       onClick={addStep}
                       disabled={!stepData.description.trim()}
-                      className="px-8 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 
-                        disabled:opacity-50 disabled:cursor-not-allowed transition-colors
-                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                        font-semibold"
+                      className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl
+                        hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed 
+                        transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 
+                        focus:ring-offset-2 focus:ring-offset-gray-800 font-semibold shadow-lg"
                     >
                       Add Step
                     </button>
                   </div>
                 </div>
 
-                {/* Screenshot notification - styling updated */}
+                {/* Screenshot notification - Updated for dark theme */}
                 {screenshotTaken && (
-                  <div className="mb-8 p-4 bg-green-50 border-2 border-green-100 rounded-xl">
-                    <p className="text-sm text-green-700 flex items-center gap-2">
+                  <div className="mb-8 p-4 bg-blue-900/30 border-2 border-blue-500/30 rounded-xl">
+                    <p className="text-sm text-blue-400 flex items-center gap-2">
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
@@ -172,7 +183,7 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Steps List - styling updated */}
+                {/* Steps List - Updated for dark theme */}
                 <DragDropContext onDragEnd={handleDragEnd}>
                   <Droppable droppableId="steps">
                     {(provided) => (
@@ -183,28 +194,28 @@ export default function Home() {
                               <div
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                className={`group bg-gray-50 rounded-lg p-4 transition-all
-                                  ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500' : 'hover:bg-gray-100'}`}
+                                className={`group bg-gray-700/50 rounded-xl p-4 transition-all border border-gray-600
+                                  ${snapshot.isDragging ? 'shadow-lg ring-2 ring-blue-500' : 'hover:bg-gray-700'}`}
                               >
                                 <div className="flex justify-between items-start gap-4">
                                   <div className="flex items-start gap-3">
                                     <div
                                       {...provided.dragHandleProps}
-                                      className="cursor-move text-gray-400 hover:text-gray-600"
+                                      className="cursor-move text-gray-400 hover:text-gray-300"
                                     >
                                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
                                       </svg>
                                     </div>
                                     <div>
-                                      <h3 className="font-medium text-gray-900">Step {step.partNumber}</h3>
+                                      <h3 className="font-medium text-white">Step {step.partNumber}</h3>
                                       {step.partName && (
-                                        <p className="text-sm text-gray-600">Part: {step.partName}</p>
+                                        <p className="text-sm text-gray-400">Part: {step.partName}</p>
                                       )}
                                       {step.customTool && (
-                                        <p className="text-sm text-gray-600">Tool: {step.customTool}</p>
+                                        <p className="text-sm text-gray-400">Tool: {step.customTool}</p>
                                       )}
-                                      <p className="text-gray-700 mt-1">{step.description}</p>
+                                      <p className="text-gray-300 mt-1">{step.description}</p>
                                     </div>
                                   </div>
                                   <button
@@ -248,9 +259,13 @@ export default function Home() {
 
           {/* Right Column - Model Preview */}
           <div className="lg:sticky lg:top-8">
-            <section className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <section className="bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700">
               <div className="p-8">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
+                  <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
                   Model Preview
                 </h2>
                 {modelFile ? (
@@ -259,8 +274,8 @@ export default function Home() {
                     onPartSelect={handlePartSelect}
                   />
                 ) : (
-                  <div className="h-[600px] flex items-center justify-center bg-gray-50 rounded-xl">
-                    <p className="text-gray-500 text-lg">Upload a model to preview</p>
+                  <div className="h-[600px] flex items-center justify-center bg-gray-700/50 rounded-xl border-2 border-dashed border-gray-600">
+                    <p className="text-gray-400 text-lg">Upload a model to preview</p>
                   </div>
                 )}
               </div>
