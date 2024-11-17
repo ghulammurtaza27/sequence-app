@@ -17,24 +17,36 @@ app.add_middleware(
     allowed_hosts=["*"]
 )
 
-# Configure CORS with specific origins
+
+# CORS configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://sequence-app-xpou.vercel.app",
-        "http://localhost:3000"
-    ],
+    allow_origins=["https://sequence-app-xpou.vercel.app"],
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],
 )
 
-@app.get("/test-cors")
-async def test_cors():
-    return {"message": "CORS is working"}
+@app.middleware("http")
+async def add_cors_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "https://sequence-app-xpou.vercel.app"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
 
-# Health check endpoint
+@app.options("/{path:path}")
+async def options_route(path: str):
+    return JSONResponse(
+        content={},
+        headers={
+            "Access-Control-Allow-Origin": "https://sequence-app-xpou.vercel.app",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+        }
+    )
+
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}

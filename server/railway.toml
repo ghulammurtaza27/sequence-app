@@ -1,0 +1,12 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+startCommand = "python start.py"
+healthcheckPath = "/health"
+restartPolicyType = "on_failure"
+
+[[deploy.headers]]
+path = "/*"
+headers = { Access-Control-Allow-Origin = "https://sequence-app-xpou.vercel.app", Access-Control-Allow-Methods = "GET,POST,OPTIONS", Access-Control-Allow-Headers = "*" }
