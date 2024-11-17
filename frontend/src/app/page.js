@@ -326,7 +326,7 @@ export default function Home() {
             <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 group hover:border-blue-500/50 transition-colors">
               <h3 className="text-xl font-semibold text-white mb-3">Need more help?</h3>
               <p className="text-gray-400">Contact our support team for additional assistance or feature requests. We're constantly improving the platform based on user feedback.</p>
-              <a href="mailto:support@example.com" 
+              <a href="mailto:murtazash123@gmail.com" 
                 className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors">
                 <span>Contact Support</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
