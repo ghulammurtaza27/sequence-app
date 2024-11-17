@@ -283,6 +283,70 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* FAQ Section - Add this after the main grid */}
+      <section className="container mx-auto px-8 py-16 border-t border-gray-800">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-white mb-12 flex items-center gap-3">
+            <svg className="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" 
+              />
+            </svg>
+            Frequently Asked Questions
+          </h2>
+
+          <div className="space-y-8">
+            {/* FAQ Item */}
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-xl font-semibold text-white mb-3">What file formats are supported?</h3>
+              <p className="text-gray-400">Currently, we support STEP files (.step, .stp) for 3D model uploads. These formats are widely used in CAD and provide the best compatibility for design reviews.</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-xl font-semibold text-white mb-3">How do I create assembly instructions?</h3>
+              <p className="text-gray-400">Upload your model, select parts in the 3D viewer, and add descriptions for each step. You can include part names and required tools. Steps can be reordered by dragging, and screenshots are automatically captured when you select parts.</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-xl font-semibold text-white mb-3">Can I export my assembly instructions?</h3>
+              <p className="text-gray-400">Yes! Once you've created your steps, you can export them as a PDF document. The PDF includes all step descriptions, part information, and captured screenshots for a complete assembly guide.</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-xl font-semibold text-white mb-3">How do I share my design reviews?</h3>
+              <p className="text-gray-400">After exporting your assembly instructions to PDF, you can easily share them with your team or clients. The PDF format ensures compatibility across different devices and platforms.</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-xl font-semibold text-white mb-3">Is my data secure?</h3>
+              <p className="text-gray-400">Your files and design data are processed locally in your browser. We don't store any of your files or assembly instructions on our servers, ensuring complete privacy and security of your intellectual property.</p>
+            </div>
+
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 group hover:border-blue-500/50 transition-colors">
+              <h3 className="text-xl font-semibold text-white mb-3">Need more help?</h3>
+              <p className="text-gray-400">Contact our support team for additional assistance or feature requests. We're constantly improving the platform based on user feedback.</p>
+              <a href="mailto:support@example.com" 
+                className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors">
+                <span>Contact Support</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Optional: Add a footer after FAQ */}
+      <footer className="bg-gray-800/50 border-t border-gray-800">
+        <div className="container mx-auto px-8 py-8">
+          <p className="text-center text-gray-500 text-sm">
+            © {new Date().getFullYear()} Design Review Tool. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
