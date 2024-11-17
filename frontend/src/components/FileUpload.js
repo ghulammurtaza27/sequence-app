@@ -1,12 +1,10 @@
 // src/components/FileUpload.js
 'use client'
 import { useState } from 'react';
-import ModelViewer from './ModelViewer';
 
-export default function FileUpload() {
+export default function FileUpload({ onUpload, currentFile }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -21,18 +19,16 @@ export default function FileUpload() {
     try {
       setIsLoading(true);
       setError(null);
-      setSelectedFile(file);  // Just set the file - ModelViewer will handle conversion
+      
+      // Pass the file directly to parent component
+      onUpload(file);
+      
     } catch (error) {
       setError('Error processing file. Please try again.');
       console.error('Upload error:', error);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handlePartSelect = (data) => {
-    console.log('Screenshot data:', data);
-    // Handle the screenshot and camera position data here
   };
 
   return (
@@ -51,21 +47,17 @@ export default function FileUpload() {
           className={`cursor-pointer inline-block px-4 py-2 bg-blue-500 text-white rounded-lg 
             ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
         >
-          {isLoading ? 'Processing...' : 'Upload STEP File'}
+          {isLoading ? 'Processing...' : currentFile ? 'Change File' : 'Upload STEP File'}
         </label>
+        {currentFile && (
+          <p className="mt-2 text-sm text-gray-600">
+            Current file: {currentFile.name}
+          </p>
+        )}
         {error && (
           <p className="text-red-500 mt-2">{error}</p>
         )}
       </div>
-
-      {selectedFile && (
-        <div className="mt-4">
-          <ModelViewer 
-            modelFile={selectedFile}
-            onPartSelect={handlePartSelect}
-          />
-        </div>
-      )}
     </div>
   );
 }
