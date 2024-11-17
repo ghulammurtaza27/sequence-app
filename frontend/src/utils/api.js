@@ -9,16 +9,12 @@ export const uploadFile = async (file) => {
       method: 'POST',
       body: formData,
       mode: 'cors',
-      credentials: 'include',
-      headers: {
-        // Don't set Content-Type when using FormData
-        'Accept': 'application/json',
-      },
+      credentials: 'omit', // Change this to 'omit'
     });
 
     if (!response.ok) {
-      const errorData = await response.text();
-      throw new Error(errorData || `HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(errorText || `HTTP error! status: ${response.status}`);
     }
 
     return await response.blob();

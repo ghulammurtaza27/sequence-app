@@ -11,17 +11,13 @@ import os
 app = FastAPI()
 
 # Update CORS configuration
+# Update CORS configuration - remove credentials requirement
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://sequence-app-xpou.vercel.app",
-        "https://sequence-app.railway.app"
-    ],
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_origins=["*"],  # Allow all origins temporarily
+    allow_credentials=False,  # Change this to False
+    allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["Content-Disposition"]
 )
 
 @app.get("/test-cors")
@@ -33,14 +29,22 @@ async def test_cors():
 async def health_check():
     return {"status": "ok"}
 
+@app.get("/test")
+async def test_endpoint():
+    return {"message": "API is working"}
+
+
 @app.post("/api/convert-step")
 async def convert_step_to_stl(file: UploadFile = File(...)):
     try:
+        # Log file details
+        print(f"Received file: {file.filename}")
+        
         # Validate file extension
         if not file.filename.lower().endswith(('.step', '.stp')):
-            raise HTTPException(
+            return JSONResponse(
                 status_code=400,
-                detail="Invalid file format. Please upload a STEP file."
+                content={"detail": "Invalid file format. Please upload a STEP file."}
             )
 
         # Create temporary files
@@ -94,7 +98,11 @@ async def convert_step_to_stl(file: UploadFile = File(...)):
                 os.unlink(temp_stl.name)
 
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        print(f"Error processing file: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": str(e)}
+        )
 
 if __name__ == "__main__":
     import uvicorn
