@@ -1,0 +1,22 @@
+# Dependencies
+**/node_modules
+**/.next
+**/build
+**/.turbo
+**/.env
+**/.env.*
+
+# Python
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Large files
+*.wasm
+*.node
+
+# OS
+.DS_Store

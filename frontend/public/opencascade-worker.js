@@ -1,0 +1,1 @@
+importScripts('https://cdn.jsdelivr.net/npm/opencascade.js@2.0.0-beta.b5e3976/dist/opencascade.wasm.js'); 
