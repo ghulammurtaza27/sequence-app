@@ -14,6 +14,7 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
   const controlsRef = useRef(null)
   const meshRef = useRef(null)
   const animationFrameRef = useRef(null)
+  const [currentAnimation, setCurrentAnimation] = useState(null);
 
   const cleanup = () => {
     if (animationFrameRef.current) {
@@ -208,6 +209,50 @@ export default function ModelViewer({ modelFile, onPartSelect }) {
       })
     }
   }
+
+  const previewStep = (step) => {
+    if (!step.partId || !step.animation) return;
+    
+    const part = scene.getObjectById(step.partId);
+    if (!part) return;
+
+    const { type, axis, value, speed } = step.animation;
+    
+    // Reset previous animations
+    if (currentAnimation) {
+      cancelAnimationFrame(currentAnimation);
+    }
+
+    if (type === 'translate') {
+      const animate = () => {
+        const target = new THREE.Vector3();
+        target[axis] = value;
+        part.position.lerp(target, 0.1 * speed);
+        
+        if (part.position[axis] !== value) {
+          setCurrentAnimation(requestAnimationFrame(animate));
+        }
+      };
+      animate();
+    }
+    
+    if (type === 'rotate') {
+      const animate = () => {
+        const target = new THREE.Euler();
+        target[axis] = THREE.MathUtils.degToRad(value);
+        part.rotation[axis] = THREE.MathUtils.lerp(
+          part.rotation[axis],
+          target[axis],
+          0.1 * speed
+        );
+        
+        if (part.rotation[axis] !== target[axis]) {
+          setCurrentAnimation(requestAnimationFrame(animate));
+        }
+      };
+      animate();
+    }
+  };
 
   return (
     <div className="relative w-full h-[600px]">
