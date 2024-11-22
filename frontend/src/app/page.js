@@ -18,13 +18,7 @@ export default function Home() {
   const [stepData, setStepData] = useState({
     description: '',
     partName: '',
-    customTool: '',
-    animation: {
-      type: 'none',  // none, translate, rotate
-      axis: 'x',     // x, y, z
-      value: 0,      // amount of translation/rotation
-      speed: 1       // animation speed multiplier
-    }
+    customTool: ''
   })
 
   const handleFileUpload = (file) => {
@@ -47,21 +41,13 @@ export default function Home() {
         partName: stepData.partName,
         customTool: stepData.customTool,
         screenshot: selectedPart?.screenshot || null,
-        partNumber: steps.length + 1,
-        animation: stepData.animation,
-        partId: selectedPart?.id || null  // Store the selected part's ID
+        partNumber: steps.length + 1
       }
       setSteps([...steps, newStep])
       setStepData({
         description: '',
         partName: '',
-        customTool: '',
-        animation: {
-          type: 'none',
-          axis: 'x',
-          value: 0,
-          speed: 1
-        }
+        customTool: ''
       })
       setSelectedPart(null)
     }
@@ -95,69 +81,6 @@ export default function Home() {
 
     setModelFile(file);
   };
-
-  const AnimationControls = () => (
-    <div className="grid grid-cols-2 gap-4 mb-4">
-      <select
-        value={stepData.animation.type}
-        onChange={(e) => setStepData({
-          ...stepData,
-          animation: { ...stepData.animation, type: e.target.value }
-        })}
-        className="px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
-          focus:border-blue-500 focus:ring-blue-500 text-white"
-      >
-        <option value="none">No Animation</option>
-        <option value="translate">Move Part</option>
-        <option value="rotate">Rotate Part</option>
-      </select>
-
-      {stepData.animation.type !== 'none' && (
-        <>
-          <select
-            value={stepData.animation.axis}
-            onChange={(e) => setStepData({
-              ...stepData,
-              animation: { ...stepData.animation, axis: e.target.value }
-            })}
-            className="px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
-              focus:border-blue-500 focus:ring-blue-500 text-white"
-          >
-            <option value="x">X Axis</option>
-            <option value="y">Y Axis</option>
-            <option value="z">Z Axis</option>
-          </select>
-
-          <input
-            type="number"
-            value={stepData.animation.value}
-            onChange={(e) => setStepData({
-              ...stepData,
-              animation: { ...stepData.animation, value: parseFloat(e.target.value) }
-            })}
-            placeholder={stepData.animation.type === 'translate' ? "Distance (mm)" : "Angle (degrees)"}
-            className="px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
-              focus:border-blue-500 focus:ring-blue-500 text-white"
-          />
-
-          <input
-            type="number"
-            value={stepData.animation.speed}
-            onChange={(e) => setStepData({
-              ...stepData,
-              animation: { ...stepData.animation, speed: parseFloat(e.target.value) }
-            })}
-            placeholder="Animation Speed"
-            min="0.1"
-            max="5"
-            step="0.1"
-            className="px-4 py-3 rounded-xl bg-gray-700 border-2 border-gray-600 
-              focus:border-blue-500 focus:ring-blue-500 text-white"
-          />
-        </>
-      )}
-    </div>
-  )
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -297,8 +220,6 @@ export default function Home() {
                         focus:border-blue-500 focus:ring-blue-500 transition-colors text-white placeholder-gray-400"
                     />
                   </div>
-
-                  <AnimationControls />
 
                   <div className="flex gap-4">
                     <input
