@@ -15,18 +15,10 @@ export default function Home() {
   const [steps, setSteps] = useState([])
   const [currentStep, setCurrentStep] = useState('')
   const [screenshotTaken, setScreenshotTaken] = useState(false)
-  const [isRecording, setIsRecording] = useState(false)
   const [stepData, setStepData] = useState({
     description: '',
     partName: '',
-    customTool: '',
-    animation: {
-      type: 'none',
-      axis: 'x',
-      value: 0,
-      speed: 1
-    },
-    recordedVideo: null
+    customTool: ''
   })
 
   const handleFileUpload = (file) => {
@@ -37,59 +29,25 @@ export default function Home() {
 
   const handlePartSelect = (partInfo) => {
     setSelectedPart(partInfo)
-    setScreenshotTaken(false)
-  }
-
-  const startRecording = async () => {
-    if (!selectedPart) return;
-    
-    setIsRecording(true);
-    
-    const canvas = document.querySelector('#model-viewer-canvas');
-    
-    const stream = canvas.captureStream(60);
-    const mediaRecorder = new MediaRecorder(stream, {
-      mimeType: 'video/webm;codecs=vp9'
-    });
-    
-    const chunks = [];
-    mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-    mediaRecorder.onstop = () => {
-      const blob = new Blob(chunks, { type: 'video/webm' });
-      const videoUrl = URL.createObjectURL(blob);
-      setStepData(prev => ({ ...prev, recordedVideo: videoUrl }));
-    };
-
-    mediaRecorder.start();
-
-    await playAnimation();
-    mediaRecorder.stop();
-    setIsRecording(false);
+    setScreenshotTaken(true)
+    setTimeout(() => setScreenshotTaken(false), 2000)
   }
 
   const addStep = () => {
-    if (stepData.description.trim() && stepData.recordedVideo) {
+    if (stepData.description.trim()) {
       const newStep = {
         id: `step-${Date.now()}`,
         description: stepData.description,
         partName: stepData.partName,
         customTool: stepData.customTool,
-        animation: stepData.animation,
-        recordedVideo: stepData.recordedVideo,
+        screenshot: selectedPart?.screenshot || null,
         partNumber: steps.length + 1
       }
       setSteps([...steps, newStep])
       setStepData({
         description: '',
         partName: '',
-        customTool: '',
-        animation: {
-          type: 'none',
-          axis: 'x',
-          value: 0,
-          speed: 1
-        },
-        recordedVideo: null
+        customTool: ''
       })
       setSelectedPart(null)
     }
@@ -349,17 +307,13 @@ export default function Home() {
                                     </svg>
                                   </button>
                                 </div>
-                                {step.recordedVideo && (
-                                  <div className="mt-3 w-64 rounded-lg overflow-hidden shadow-sm">
-                                    <video 
-                                      src={step.recordedVideo}
-                                      controls
-                                      loop
-                                      muted
-                                      className="w-full"
-                                    >
-                                      Your browser does not support the video element.
-                                    </video>
+                                {step.screenshot && (
+                                  <div className="mt-3 w-32 h-32 bg-white rounded-lg overflow-hidden shadow-sm">
+                                    <img
+                                      src={step.screenshot}
+                                      alt={`Step ${step.partNumber}`}
+                                      className="w-full h-full object-contain"
+                                    />
                                   </div>
                                 )}
                               </div>
